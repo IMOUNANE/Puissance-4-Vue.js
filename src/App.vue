@@ -1,20 +1,21 @@
 <template>
   <div id="app">
    
-    <Tille />
-    <Calculator/>
+    
+    <Puissance4/>
+    
   </div>
 </template>
 
 <script>
-import Title from "./components/Title.vue";
-import Calculator from "./components/Calculator.vue";
+
+
+import Puissance4 from "./components/Puissance4.vue";
 
 export default {
   name: "App",
   components: {
-    Title,
-    Calculator
+    Puissance4,
   }
 };
 </script>
