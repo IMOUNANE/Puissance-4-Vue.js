@@ -165,12 +165,7 @@
 
         <div class="btn" >
             <div id="5:6" class="cicle" @click="assign()"></div>
-        </div>
-
-        
-     
-
-        
+        </div>   
     </div>
 
 </template>
@@ -184,12 +179,7 @@
                 player: 1,
                 win:false,
                 count:0,
-                
-                   
-
-               
-               
-            
+                proceed: true,
                 tab:[
                         [0,0,0,0,0,0,0],
                         [0,0,0,0,0,0,0],
@@ -197,9 +187,7 @@
                         [0,0,0,0,0,0,0],
                         [0,0,0,0,0,0,0],
                         [0,0,0,0,0,0,0]
-                    ],
-               
-                
+                    ],   
             }
         },
         methods:{
@@ -211,25 +199,25 @@
                         
                         
                         if(this.player==1 && memo==0){
+                            
                             this.tab[this.pos[0]][this.pos[2]]=1;
-                            this.assigncolor();
-                            this.checkwinner();
+
+
+                            this.positionning();
+                            this.check_winner();
                             this.player=2;
                             
                         } else if (this.player==2 && memo==0){
+
                             this.tab[this.pos[0]][this.pos[2]]=2;
-                            this.assigncolor();
-                            this.checkwinner();
+
+                            this.positionning();
+                            this.check_winner();
                             this.player=1;
                         }
-                        
-                        
-                        
-                 
-                 
+                               
             },
-            checkwinner(){
-                
+            check_winner(){
                 this.up();
                 this.right();
                 this.left();
@@ -237,167 +225,200 @@
                 this.diagonal_left_up();
                 this.diagonal_right_up();
                 this.diagonal_left_down();
-                this.down();
-           
-
-
-                
+                this.down();   
             },
             winner(checkcolor){
-                    if(checkcolor==this.player){
-                        this.count++;
-                        if(this.count>=4){
-                        console.log("tu as gagner");
+                if(checkcolor==this.player){
+                    this.count++;
+                    if(this.count>=4){
+                        alert("le joueur "+this.player+" a gagner");
+                    }
+                }
+            },
+            positionning(){
+                    if(this.pos!== null){
+                        this.proceed=true;
+                        while(this.proceed){
+                            
+                            switch(parseInt(this.pos[0])){
+                                case 0:
+                                    this.check_box_below();
+                                    break;
+                                case 1:
+                                    this.check_box_below();
+                                    break;
+                                case 2:
+                                    this.check_box_below();
+                                    break;
+                                case 3:
+                                   this.check_box_below();
+                                   break;
+                                case 4:
+                                    this.check_box_below();
+                                    break;
+                                default:
+                                    this.assign_color();
+                                    this.proceed=false;
+                                    break;           
+                            }
                         }
                     }
             },
-            assigncolor(){
+            check_box_below(){
+                if(this.tab[(parseInt(this.pos[0])+1)][(parseInt(this.pos[2]))]==0){
+
+                    this.tab[(parseInt(this.pos[0]))][(parseInt(this.pos[2]))]=0;
+                    this.pos[0]++;
+                    this.tab[(parseInt(this.pos[0]))][(parseInt(this.pos[2]))]=this.player;
+
+                }else{
+                    this.assign_color();
+                    this.proceed=false;
+                }   
+            },
+            assign_color(){
                 for(let i=0 ; i<this.tab.length;i++){
                     for(let j=0 ; j<this.tab[i].length;j++){
                             
                         if(this.tab[i][j]==1){
-
-                            
+           
                             document.getElementById(i+this.pos[1]+j).classList="cicle yellow";
+                            this.player=2;
                             
                         }else if(this.tab[i][j]==2){
                             
                             document.getElementById(i+this.pos[1]+j).classList="cicle red";
+                            this.player=1;
                         }
-                    }    
-                    
+                    }                        
                 }
             },
             left(){
-                    if(this.pos!== null){
-                        for(let i=0;i<4;++i){
-                            if((parseInt(this.pos[2])-i) >= 0){
+                if(this.pos!== null){
+                    for(let i=0;i<4;++i){
+                        if((parseInt(this.pos[2])-i) >= 0){
 
-                                var checkcolor = this.tab[(parseInt(this.pos[0]))][(parseInt(this.pos[2])-i)];
-                                this.winner(checkcolor);
-                            
-                            }else{
-                                this.count==0;
-                                break;
-                            }
+                            var checkcolor = this.tab[(parseInt(this.pos[0]))][(parseInt(this.pos[2])-i)];
+                            this.winner(checkcolor);
+                        
+                        }else{
+                            this.count==0;
+                            break;
                         }
-                        this.count=0;
                     }
-                  
-                   
-            
+                    this.count=0;
+                }
             },
             right(){
-                    if(this.pos!== null){
-                        for(let i=0;i<4;++i){
-                            if((parseInt(this.pos[2])+i) <= 6){
+                if(this.pos!== null){
+                    for(let i=0;i<4;++i){
+                        if((parseInt(this.pos[2])+i) <= 6){
 
-                                var checkcolor = this.tab[(parseInt(this.pos[0]))][(parseInt(this.pos[2])+i)];
-                                this.winner(checkcolor);
-                               
-                            }else{
-                                this.count==0;
-                                break;
-                            }
+                            var checkcolor = this.tab[(parseInt(this.pos[0]))][(parseInt(this.pos[2])+i)];
+                            this.winner(checkcolor);
+                            
+                        }else{
+                            this.count==0;
+                            break;
                         }
-                        this.count=0;
                     }
+                    this.count=0;
+                }
             },
             up(){
-                    if(this.pos !== null){
-                        
-                        for(let i=0;i<4;++i){
-                            if((parseInt(this.pos[0])-i) >= 0 ){
+                if(this.pos !== null){
+                    
+                    for(let i=0;i<4;++i){
+                        if((parseInt(this.pos[0])-i) >= 0 ){
 
-                                var checkcolor = this.tab[(parseInt(this.pos[0]))][(parseInt(this.pos[2])-i)];
-                                this.winner(checkcolor);
-                            }else{
-                                this.count==0;
-                                break;
-                            } 
-                        }
-                        this.count=0;
+                            var checkcolor = this.tab[(parseInt(this.pos[0]))][(parseInt(this.pos[2])-i)];
+                            this.winner(checkcolor);
+                        }else{
+                            this.count==0;
+                            break;
+                        } 
                     }
+                    this.count=0;
+                }
             },
             down(){
-                    if(this.pos!== null){
-                        for(let i=0;i<4;++i){
-                            if((parseInt(this.pos[0])+i) <= 5 ){
-                                
-                                var checkcolor = this.tab[(parseInt(this.pos[0])+i)][(parseInt(this.pos[2]))];
-                                this.winner(checkcolor);
+                if(this.pos!== null){
+                    for(let i=0;i<4;++i){
+                        if((parseInt(this.pos[0])+i) <= 5 ){
+                            
+                            var checkcolor = this.tab[(parseInt(this.pos[0])+i)][(parseInt(this.pos[2]))];
+                            this.winner(checkcolor);
 
-                            }else{
-                                this.count==0;
-                                break;
-                            }
+                        }else{
+                            this.count==0;
+                            break;
                         }
-                        this.count=0;
                     }
+                    this.count=0;
+                }
             },
             diagonal_right_down(){
-                    if(this.pos!== null){
-                        for(let i=0;i<4;++i){
-                            if((parseInt(this.pos[0])+i) <= 5 && (parseInt(this.pos[2])+i) <=6){
+                if(this.pos!== null){
+                    for(let i=0;i<4;++i){
+                        if((parseInt(this.pos[0])+i) <= 5 && (parseInt(this.pos[2])+i) <=6){
 
-                                var checkcolor = this.tab[(parseInt(this.pos[0])+i)][(parseInt(this.pos[2])+i)];
-                                this.winner(checkcolor);
+                            var checkcolor = this.tab[(parseInt(this.pos[0])+i)][(parseInt(this.pos[2])+i)];
+                            this.winner(checkcolor);
 
-                            }else{
-                                this.count==0;
-                                break;
-                            }                        
-                        }
-                        this.count=0;
-                    }            
+                        }else{
+                            this.count==0;
+                            break;
+                        }                        
+                    }
+                    this.count=0;
+                }            
             },
-            diagonal_left_up(){
+            diagonal_left_up(){   
+                if(this.pos!== null){
                     
-                    if(this.pos!== null){
+                    for(let i=0;i<4;++i){
                         
-                        for(let i=0;i<4;++i){
-                            
-                            if((parseInt(this.pos[0])-i) >= 0 && (parseInt(this.pos[2])-i) >=0){
+                        if((parseInt(this.pos[0])-i) >= 0 && (parseInt(this.pos[2])-i) >=0){
 
-                                var checkcolor = this.tab[(parseInt(this.pos[0])-i)][(parseInt(this.pos[2])-i)];
-                                this.winner(checkcolor); 
+                            var checkcolor = this.tab[(parseInt(this.pos[0])-i)][(parseInt(this.pos[2])-i)];
+                            this.winner(checkcolor); 
 
-                            }else{
-                                this.count==0;
-                                break;
-                            }
+                        }else{
+                            this.count==0;
+                            break;
                         }
-                        this.count=0;
-                    }   
+                    }
+                    this.count=0;
+                }   
             },
             diagonal_right_up(){
-                    if(this.pos!== null){
-                        
-                        for(let i=0;i<4;++i){
-                            
-                            if((parseInt(this.pos[0])-i) >= 0 && (parseInt(this.pos[2])+i)<=6){
-
-                                var checkcolor = this.tab[(parseInt(this.pos[0])-i)][(parseInt(this.pos[2])+i)];
-                                this.winner(checkcolor);
-
-                            }else{
-                                
-                                this.count==0;
-                                break;
-                            }
-                            
-                        }
-                        this.count=0;
-                    }  
-            },
-            diagonal_left_down(){
+                if(this.pos!== null){
                     
+                    for(let i=0;i<4;++i){
+                        
+                        if((parseInt(this.pos[0])-i) >= 0 && (parseInt(this.pos[2])+i)<=6){
+
+                            var checkcolor = this.tab[(parseInt(this.pos[0])-i)][(parseInt(this.pos[2])+i)];
+                            this.winner(checkcolor);
+
+                        }else{
+                            
+                            this.count==0;
+                            break;
+                        }
+                        
+                    }
+                    this.count=0;
+                }  
+            },
+            diagonal_left_down(){   
                 if(this.pos!== null){
                     
                     for(let i=0;i<4;++i){
                         if((parseInt(this.pos[0])+i) <= 5 && (parseInt(this.pos[2])-i) >= 0){
 
                             var checkcolor = this.tab[(parseInt(this.pos[0])+i)][(parseInt(this.pos[2])-i)];
+                            //console.log(this.tab);
                             this.winner(checkcolor);
 
                         }else{
@@ -408,11 +429,7 @@
                     this.count=0;
                 }  
             },
-            
-            
-
         }
-
     }
 
 </script>
