@@ -195,26 +195,13 @@
                         
                         this.pos=event.srcElement.id.split('');
                         var memo = this.tab[this.pos[0]][this.pos[2]];
-                        
-                        
-                        
-                        if(this.player==1 && memo==0){
-                            
-                            this.tab[this.pos[0]][this.pos[2]]=1;
-
-
+                        if(memo==0){
                             this.positionning();
+                            console.log("positionning fini");
                             this.check_winner();
-                            this.player=2;
-                            
-                        } else if (this.player==2 && memo==0){
-
-                            this.tab[this.pos[0]][this.pos[2]]=2;
-
-                            this.positionning();
-                            this.check_winner();
-                            this.player=1;
+                            this.switch_player();
                         }
+                        
                                
             },
             check_winner(){
@@ -226,6 +213,19 @@
                 this.diagonal_right_up();
                 this.diagonal_left_down();
                 this.down();   
+            },
+            switch_player(){
+                switch(this.player){
+                    case 1:
+                        this.player=2;
+                        break;
+                    case 2:
+                        this.player=1;
+                        break;
+                    default:
+                        console.log("error");
+                        break;
+                }
             },
             winner(checkcolor){
                 if(checkcolor==this.player){
@@ -239,9 +239,10 @@
                     if(this.pos!== null){
                         this.proceed=true;
                         while(this.proceed){
-                            
+
                             switch(parseInt(this.pos[0])){
                                 case 0:
+
                                     this.check_box_below();
                                     break;
                                 case 1:
@@ -256,8 +257,9 @@
                                 case 4:
                                     this.check_box_below();
                                     break;
+                                
                                 default:
-                                    this.assign_color();
+                                    this.check_box_below();
                                     this.proceed=false;
                                     break;           
                             }
@@ -265,13 +267,20 @@
                     }
             },
             check_box_below(){
-                if(this.tab[(parseInt(this.pos[0])+1)][(parseInt(this.pos[2]))]==0){
-
-                    this.tab[(parseInt(this.pos[0]))][(parseInt(this.pos[2]))]=0;
-                    this.pos[0]++;
+                if((parseInt(this.pos[0]) < 5)){
+                    if(this.tab[(parseInt(this.pos[0])+1)][(parseInt(this.pos[2]))]==0){
+                        this.tab[(parseInt(this.pos[0]))][(parseInt(this.pos[2]))]=0;
+                        this.pos[0]++;
+                        this.tab[(parseInt(this.pos[0]))][(parseInt(this.pos[2]))]=this.player;
+                    }else{
+                        this.tab[(parseInt(this.pos[0]))][(parseInt(this.pos[2]))]=this.player;
+                        this.assign_color();
+                        this.proceed=false;
+                    }   
+                }
+                else{
+                    
                     this.tab[(parseInt(this.pos[0]))][(parseInt(this.pos[2]))]=this.player;
-
-                }else{
                     this.assign_color();
                     this.proceed=false;
                 }   
@@ -283,12 +292,12 @@
                         if(this.tab[i][j]==1){
            
                             document.getElementById(i+this.pos[1]+j).classList="cicle yellow";
-                            this.player=2;
+                            
                             
                         }else if(this.tab[i][j]==2){
                             
                             document.getElementById(i+this.pos[1]+j).classList="cicle red";
-                            this.player=1;
+
                         }
                     }                        
                 }
