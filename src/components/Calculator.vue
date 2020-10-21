@@ -55,7 +55,7 @@
                 }
                 /*
                     other method
-                    dot(symmbol)
+                    dot(symbol)
                 if(this.proceed===false){
                     this.result=this.result+symbol;
                     this.proceed=true;
