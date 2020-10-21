@@ -1,8 +1,12 @@
 <template>
   <div id="app">
-   
+
+
     
-    <Puissance4/>
+    <Puissance4 />
+    
+
+    
     
   </div>
 </template>
@@ -16,7 +20,10 @@ export default {
   name: "App",
   components: {
     Puissance4,
-  }
+      
+  },
+  
+  
 };
 </script>
 

@@ -177,7 +177,6 @@
             return{
                 pos:[],
                 player: 1,
-                win:false,
                 count:0,
                 proceed: true,
                 tab:[
@@ -188,21 +187,19 @@
                         [0,0,0,0,0,0,0],
                         [0,0,0,0,0,0,0]
                     ],   
+                
+                  
             }
         },
         methods:{
-            assign(){
-                        
-                        this.pos=event.srcElement.id.split('');
-                        var memo = this.tab[this.pos[0]][this.pos[2]];
-                        if(memo==0){
-                            this.positionning();
-                            console.log("positionning fini");
-                            this.check_winner();
-                            this.switch_player();
-                        }
-                        
-                               
+            assign(){                       
+                this.pos=event.srcElement.id.split('');
+                var memo = this.tab[this.pos[0]][this.pos[2]];
+                if(memo==0){
+                    this.positionning();
+                    this.check_winner();
+                    this.switch_player();
+                }   
             },
             check_winner(){
                 this.up();
@@ -231,6 +228,8 @@
                 if(checkcolor==this.player){
                     this.count++;
                     if(this.count>=4){
+                       // this.assign_color();
+                        //console.log("color");
                         alert("le joueur "+this.player+" a gagner");
                     }
                 }
@@ -267,16 +266,12 @@
                     }
             },
             check_box_below(){
-                if((parseInt(this.pos[0]) < 5)){
-                    if(this.tab[(parseInt(this.pos[0])+1)][(parseInt(this.pos[2]))]==0){
+                if((parseInt(this.pos[0]) < 5) && this.tab[(parseInt(this.pos[0])+1)][(parseInt(this.pos[2]))]==0 ){
+                    
                         this.tab[(parseInt(this.pos[0]))][(parseInt(this.pos[2]))]=0;
                         this.pos[0]++;
                         this.tab[(parseInt(this.pos[0]))][(parseInt(this.pos[2]))]=this.player;
-                    }else{
-                        this.tab[(parseInt(this.pos[0]))][(parseInt(this.pos[2]))]=this.player;
-                        this.assign_color();
-                        this.proceed=false;
-                    }   
+          
                 }
                 else{
                     
@@ -292,7 +287,7 @@
                         if(this.tab[i][j]==1){
            
                             document.getElementById(i+this.pos[1]+j).classList="cicle yellow";
-                            
+                            console.log("jaune color");
                             
                         }else if(this.tab[i][j]==2){
                             
@@ -438,7 +433,12 @@
                     this.count=0;
                 }  
             },
-        }
+
+        },
+        
+            
+            
+        
     }
 
 </script>
